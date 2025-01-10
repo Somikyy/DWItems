@@ -1,0 +1,22 @@
+name: DWItems
+version: '${project.version}'
+main: com.dwitems.DWItems
+api-version: '1.16'
+depend:
+  - WorldGuard
+softdepend: [ProtectionStones]
+
+commands:
+  dwi:
+    description: Основная команда плагина DWItems
+    usage: /<command> give <предмет> [игрок] [количество]
+    permission: dwitems.give
+
+permissions:
+  dwitems.give:
+    description: Разрешает использовать команду /dwi give
+    default: op
+
+  dwitems.reload:
+    description: Позволяет перезагружать плагин
+    default: op

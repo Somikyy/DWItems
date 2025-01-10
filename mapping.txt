@@ -1,0 +1,379 @@
+com.dwitems.DWItems -> com.dwitems.DWItems:
+# {"fileName":"DWItems.java","id":"sourceFile"}
+    com.dwitems.managers.ItemManager itemManager -> itemManager
+    com.dwitems.managers.MessageManager messageManager -> messageManager
+    9:9:void <init>() -> <init>
+    16:54:void onEnable() -> onEnable
+    58:59:void onDisable() -> onDisable
+    62:62:com.dwitems.managers.ItemManager getItemManager() -> getItemManager
+    66:66:com.dwitems.managers.MessageManager getMessageManager() -> getMessageManager
+com.dwitems.commands.DWItemsCommand -> com.dwitems.a.a:
+# {"fileName":"DWItemsCommand.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> a
+    20:22:void <init>(com.dwitems.DWItems) -> <init>
+    26:43:boolean onCommand(org.bukkit.command.CommandSender,org.bukkit.command.Command,java.lang.String,java.lang.String[]) -> onCommand
+    1047:1113:void handleGiveCommand(org.bukkit.command.CommandSender,java.lang.String[]):47:113 -> onCommand
+    1047:1113:boolean onCommand(org.bukkit.command.CommandSender,org.bukkit.command.Command,java.lang.String,java.lang.String[]):33 -> onCommand
+    1116:1131:void handleReloadCommand(org.bukkit.command.CommandSender):116:131 -> onCommand
+    1116:1131:boolean onCommand(org.bukkit.command.CommandSender,org.bukkit.command.Command,java.lang.String,java.lang.String[]):36 -> onCommand
+    1588:1602:void com.dwitems.managers.ItemManager.reloadItems():588:602 -> onCommand
+    1588:1602:void handleReloadCommand(org.bukkit.command.CommandSender):124 -> onCommand
+    1588:1602:boolean onCommand(org.bukkit.command.CommandSender,org.bukkit.command.Command,java.lang.String,java.lang.String[]):36 -> onCommand
+    135:152:java.util.List onTabComplete(org.bukkit.command.CommandSender,org.bukkit.command.Command,java.lang.String,java.lang.String[]) -> onTabComplete
+    2033:2033:java.util.List com.dwitems.managers.ItemManager.getItemIds():33:33 -> onTabComplete
+    2033:2033:java.util.List onTabComplete(org.bukkit.command.CommandSender,org.bukkit.command.Command,java.lang.String,java.lang.String[]):143 -> onTabComplete
+    151:151:boolean lambda$onTabComplete$0(java.lang.String[],java.lang.String) -> a
+com.dwitems.items.CustomItem -> com.dwitems.b.a:
+# {"fileName":"CustomItem.java","id":"sourceFile"}
+    java.lang.String displayName -> a
+    java.util.List lore -> a
+    org.bukkit.inventory.ItemStack item -> a
+    16:21:void <init>(java.lang.String,java.util.List,org.bukkit.inventory.ItemStack) -> <init>
+    24:31:org.bukkit.inventory.ItemStack create() -> a
+    1048:1050:java.util.List formatHexList(java.util.List):48:50 -> a
+    1048:1050:org.bukkit.inventory.ItemStack create():28 -> a
+    35:44:java.lang.String formatHex(java.lang.String) -> a
+com.dwitems.listeners.BedrockerListener -> com.dwitems.listeners.BedrockerListener:
+# {"fileName":"BedrockerListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.util.HashMap cooldowns -> cooldowns
+    java.util.Set activeArenas -> activeArenas
+    20:25:void <init>(com.dwitems.DWItems) -> <init>
+    29:97:void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent) -> onPlayerInteract
+    100:101:boolean isOverlapping(org.bukkit.Location,int) -> isOverlapping
+    105:119:java.util.Set getArenaLocations(org.bukkit.Location,int) -> getArenaLocations
+    123:133:java.util.List createArena(org.bukkit.Location,int) -> createArena
+    137:138:void restoreBlocks(java.util.List) -> restoreBlocks
+com.dwitems.listeners.BedrockerListener$1 -> com.dwitems.listeners.a:
+# {"fileName":"BedrockerListener.java","id":"sourceFile"}
+    java.util.List val$originalBlocks -> a
+    org.bukkit.Location val$center -> a
+    int val$size -> a
+    org.bukkit.entity.Player val$player -> a
+    com.dwitems.listeners.BedrockerListener this$0 -> a
+    89:89:void <init>(com.dwitems.listeners.BedrockerListener,java.util.List,org.bukkit.Location,int,org.bukkit.entity.Player) -> <init>
+    92:95:void run() -> run
+com.dwitems.listeners.BlindListener -> com.dwitems.listeners.BlindListener:
+# {"fileName":"BlindListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.util.HashMap cooldowns -> cooldowns
+    19:23:void <init>(com.dwitems.DWItems) -> <init>
+    27:84:void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent) -> onPlayerInteract
+    68:71:void lambda$onPlayerInteract$2(int,int,org.bukkit.entity.Player) -> lambda$onPlayerInteract$2
+    65:65:org.bukkit.entity.Player lambda$onPlayerInteract$1(org.bukkit.entity.Entity) -> lambda$onPlayerInteract$1
+    64:64:boolean lambda$onPlayerInteract$0(org.bukkit.entity.Entity) -> lambda$onPlayerInteract$0
+com.dwitems.listeners.BlockerListener -> com.dwitems.listeners.BlockerListener:
+# {"fileName":"BlockerListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.util.HashMap cooldowns -> cooldowns
+    java.util.Set activeWalls -> activeWalls
+    21:26:void <init>(com.dwitems.DWItems) -> <init>
+    30:103:void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent) -> onPlayerInteract
+    106:115:org.bukkit.Location getWallLocation(org.bukkit.entity.Player,int) -> getWallLocation
+    120:143:java.util.Set getWallLocations(org.bukkit.Location,int,float) -> getWallLocations
+    147:148:boolean isOverlapping(org.bukkit.Location,int,float) -> isOverlapping
+    152:162:java.util.List createWall(org.bukkit.Location,int,float) -> createWall
+    166:167:void restoreBlocks(java.util.List) -> restoreBlocks
+com.dwitems.listeners.BlockerListener$1 -> com.dwitems.listeners.b:
+# {"fileName":"BlockerListener.java","id":"sourceFile"}
+    java.util.List val$originalBlocks -> a
+    org.bukkit.Location val$wallLocation -> a
+    int val$size -> a
+    org.bukkit.entity.Player val$player -> a
+    com.dwitems.listeners.BlockerListener this$0 -> a
+    94:94:void <init>(com.dwitems.listeners.BlockerListener,java.util.List,org.bukkit.Location,int,org.bukkit.entity.Player) -> <init>
+    97:101:void run() -> run
+com.dwitems.listeners.FeatherAngelListener -> com.dwitems.listeners.FeatherAngelListener:
+# {"fileName":"FeatherAngelListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.util.HashMap cooldowns -> cooldowns
+    java.util.Set noFallDamage -> noFallDamage
+    21:26:void <init>(com.dwitems.DWItems) -> <init>
+    30:92:void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent) -> onPlayerInteract
+    96:108:void onEntityDamage(org.bukkit.event.entity.EntityDamageEvent) -> onEntityDamage
+com.dwitems.listeners.FireAuraListener -> com.dwitems.listeners.FireAuraListener:
+# {"fileName":"FireAuraListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.util.HashMap cooldowns -> cooldowns
+    21:25:void <init>(com.dwitems.DWItems) -> <init>
+    29:99:void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent) -> onPlayerInteract
+com.dwitems.listeners.GiantShulkerListener -> com.dwitems.listeners.GiantShulkerListener:
+# {"fileName":"GiantShulkerListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.lang.String customShulkerName -> customShulkerName
+    33:36:void <init>(com.dwitems.DWItems) -> <init>
+    57:92:void onShulkerOpen(org.bukkit.event.inventory.InventoryOpenEvent) -> onShulkerOpen
+    96:131:void onShulkerClose(org.bukkit.event.inventory.InventoryCloseEvent) -> onShulkerClose
+    1051:1051:org.bukkit.block.ShulkerBox com.dwitems.listeners.GiantShulkerListener$CustomShulkerHolder.getOriginal():51:51 -> onShulkerClose
+    1051:1051:void onShulkerClose(org.bukkit.event.inventory.InventoryCloseEvent):101 -> onShulkerClose
+    135:185:void onShulkerPlace(org.bukkit.event.block.BlockPlaceEvent) -> onShulkerPlace
+    189:235:void onShulkerBreak(org.bukkit.event.block.BlockBreakEvent) -> onShulkerBreak
+    238:243:boolean isCustomShulker(org.bukkit.inventory.ItemStack) -> isCustomShulker
+    247:248:boolean isCustomShulker(org.bukkit.block.ShulkerBox) -> isCustomShulker
+    253:258:java.lang.String serializeContents(java.util.List) -> serializeContents
+    264:272:java.util.List deserializeContents(java.lang.String) -> deserializeContents
+    278:299:void onInventoryClick(org.bukkit.event.inventory.InventoryClickEvent) -> onInventoryClick
+com.dwitems.listeners.GiantShulkerListener$CustomShulkerHolder -> com.dwitems.listeners.c:
+# {"fileName":"GiantShulkerListener.java","id":"sourceFile"}
+    org.bukkit.block.ShulkerBox original -> a
+    41:43:void <init>(org.bukkit.block.ShulkerBox) -> <init>
+    47:47:org.bukkit.inventory.Inventory getInventory() -> getInventory
+com.dwitems.listeners.HarpoonListener -> com.dwitems.listeners.HarpoonListener:
+# {"fileName":"HarpoonListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.util.Map lastUseTime -> lastUseTime
+    java.util.Map activeHooks -> activeHooks
+    java.util.Map hookLocations -> hookLocations
+    java.util.Map hookedEntities -> hookedEntities
+    java.util.Map combatTime -> combatTime
+    java.lang.String USES_PREFIX -> USES_PREFIX
+    25:34:void <init>(com.dwitems.DWItems) -> <init>
+    38:48:void onPlayerDamage(org.bukkit.event.entity.EntityDamageByEntityEvent) -> onPlayerDamage
+    52:120:void onPlayerFish(org.bukkit.event.player.PlayerFishEvent) -> onPlayerFish
+    125:145:void handleHookLanding(org.bukkit.entity.Player,org.bukkit.Location) -> handleHookLanding
+    149:152:boolean isVerticalSurface(org.bukkit.Location) -> isVerticalSurface
+    157:170:boolean isNearWall(org.bukkit.Location) -> isNearWall
+    176:200:boolean isNearBlock(org.bukkit.Location,double) -> isNearBlock
+    205:207:void onPlayerChangeItem(org.bukkit.event.player.PlayerItemHeldEvent) -> onPlayerChangeItem
+    211:218:void onAnvilPrepare(org.bukkit.event.inventory.PrepareAnvilEvent) -> onAnvilPrepare
+    221:245:void pullPlayerToLocation(org.bukkit.entity.Player,org.bukkit.Location) -> pullPlayerToLocation
+    248:258:java.lang.String getHarpoonType(org.bukkit.inventory.ItemStack) -> getHarpoonType
+    262:266:void clearHookData(org.bukkit.entity.Player) -> clearHookData
+    269:279:boolean isHarpoon(org.bukkit.inventory.ItemStack) -> isHarpoon
+    283:289:int getDefaultUses(java.lang.String) -> getDefaultUses
+    294:309:int getUses(org.bukkit.inventory.ItemStack) -> getUses
+    313:333:void updateUses(org.bukkit.inventory.ItemStack,int) -> updateUses
+    336:339:void setCombatTime(org.bukkit.entity.Player) -> setCombatTime
+    342:343:boolean isInCombat(org.bukkit.entity.Player) -> isInCombat
+com.dwitems.listeners.HarpoonListener$1 -> com.dwitems.listeners.d:
+# {"fileName":"HarpoonListener.java","id":"sourceFile"}
+    int[] $SwitchMap$org$bukkit$event$player$PlayerFishEvent$State -> a
+    82:82:void <clinit>() -> <clinit>
+com.dwitems.listeners.PoisonEggListener -> com.dwitems.listeners.PoisonEggListener:
+# {"fileName":"PoisonEggListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.util.HashMap cooldowns -> cooldowns
+    20:24:void <init>(com.dwitems.DWItems) -> <init>
+    28:65:void onEggThrow(org.bukkit.event.entity.ProjectileLaunchEvent) -> onEggThrow
+    69:92:void onEggHit(org.bukkit.event.entity.ProjectileHitEvent) -> onEggHit
+com.dwitems.listeners.RandomEggListener -> com.dwitems.listeners.RandomEggListener:
+# {"fileName":"RandomEggListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.util.Random random -> random
+    java.util.Map entityTypes -> entityTypes
+    22:28:void <init>(com.dwitems.DWItems) -> <init>
+    31:37:void initEntityTypes() -> initEntityTypes
+    41:72:void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent) -> onPlayerInteract
+    75:88:void handleSpawnerPlacement(org.bukkit.block.Block,org.bukkit.entity.Player,org.bukkit.inventory.ItemStack) -> handleSpawnerPlacement
+    92:111:void handleMobSpawn(org.bukkit.entity.Player,org.bukkit.block.Block,org.bukkit.inventory.ItemStack) -> handleMobSpawn
+    114:135:org.bukkit.entity.EntityType getRandomEntityType() -> getRandomEntityType
+com.dwitems.listeners.RepairAnvilListener -> com.dwitems.listeners.RepairAnvilListener:
+# {"fileName":"RepairAnvilListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.util.HashMap cooldowns -> cooldowns
+    20:24:void <init>(com.dwitems.DWItems) -> <init>
+    28:81:void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent) -> onPlayerInteract
+    84:106:int repairAllItems(org.bukkit.entity.Player) -> repairAllItems
+    110:126:boolean repairItem(org.bukkit.inventory.ItemStack) -> repairItem
+com.dwitems.listeners.ScroogeShulkerListener -> com.dwitems.listeners.ScroogeShulkerListener:
+# {"fileName":"ScroogeShulkerListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.lang.String customShulkerName -> customShulkerName
+    32:35:void <init>(com.dwitems.DWItems) -> <init>
+    56:91:void onShulkerOpen(org.bukkit.event.inventory.InventoryOpenEvent) -> onShulkerOpen
+    95:128:void onShulkerClose(org.bukkit.event.inventory.InventoryCloseEvent) -> onShulkerClose
+    1050:1050:org.bukkit.block.ShulkerBox com.dwitems.listeners.ScroogeShulkerListener$CustomScroogeShulkerHolder.getOriginal():50:50 -> onShulkerClose
+    1050:1050:void onShulkerClose(org.bukkit.event.inventory.InventoryCloseEvent):100 -> onShulkerClose
+    132:177:void onShulkerPlace(org.bukkit.event.block.BlockPlaceEvent) -> onShulkerPlace
+    181:227:void onShulkerBreak(org.bukkit.event.block.BlockBreakEvent) -> onShulkerBreak
+    230:235:boolean isCustomShulker(org.bukkit.inventory.ItemStack) -> isCustomShulker
+    239:240:boolean isCustomShulker(org.bukkit.block.ShulkerBox) -> isCustomShulker
+    245:250:java.lang.String serializeContents(java.util.List) -> serializeContents
+    256:264:java.util.List deserializeContents(java.lang.String) -> deserializeContents
+    270:291:void onInventoryClick(org.bukkit.event.inventory.InventoryClickEvent) -> onInventoryClick
+com.dwitems.listeners.ScroogeShulkerListener$CustomScroogeShulkerHolder -> com.dwitems.listeners.e:
+# {"fileName":"ScroogeShulkerListener.java","id":"sourceFile"}
+    org.bukkit.block.ShulkerBox original -> a
+    40:42:void <init>(org.bukkit.block.ShulkerBox) -> <init>
+    46:46:org.bukkit.inventory.Inventory getInventory() -> getInventory
+com.dwitems.listeners.ShulkerListener -> com.dwitems.listeners.ShulkerListener:
+# {"fileName":"ShulkerListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.lang.String customShulkerName -> customShulkerName
+    33:36:void <init>(com.dwitems.DWItems) -> <init>
+    58:94:void onShulkerOpen(org.bukkit.event.inventory.InventoryOpenEvent) -> onShulkerOpen
+    98:133:void onShulkerClose(org.bukkit.event.inventory.InventoryCloseEvent) -> onShulkerClose
+    1052:1052:org.bukkit.block.ShulkerBox com.dwitems.listeners.ShulkerListener$CustomShulkerHolder.getOriginal():52:52 -> onShulkerClose
+    1052:1052:void onShulkerClose(org.bukkit.event.inventory.InventoryCloseEvent):103 -> onShulkerClose
+    137:188:void onShulkerPlace(org.bukkit.event.block.BlockPlaceEvent) -> onShulkerPlace
+    192:245:void onShulkerBreak(org.bukkit.event.block.BlockBreakEvent) -> onShulkerBreak
+    248:253:boolean isCustomShulker(org.bukkit.inventory.ItemStack) -> isCustomShulker
+    257:258:boolean isCustomShulker(org.bukkit.block.ShulkerBox) -> isCustomShulker
+    264:269:java.lang.String serializeContents(java.util.List) -> serializeContents
+    275:283:java.util.List deserializeContents(java.lang.String) -> deserializeContents
+    289:310:void onInventoryClick(org.bukkit.event.inventory.InventoryClickEvent) -> onInventoryClick
+com.dwitems.listeners.ShulkerListener$CustomShulkerHolder -> com.dwitems.listeners.f:
+# {"fileName":"ShulkerListener.java","id":"sourceFile"}
+    org.bukkit.block.ShulkerBox original -> a
+    42:44:void <init>(org.bukkit.block.ShulkerBox) -> <init>
+    48:48:org.bukkit.inventory.Inventory getInventory() -> getInventory
+com.dwitems.listeners.SmokeJumpListener -> com.dwitems.listeners.SmokeJumpListener:
+# {"fileName":"SmokeJumpListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.util.Map consecutiveJumps -> consecutiveJumps
+    java.util.Map lastJumpTime -> lastJumpTime
+    java.util.Map activeSmoke -> activeSmoke
+    java.lang.String USES_PREFIX -> USES_PREFIX
+    24:31:void <init>(com.dwitems.DWItems) -> <init>
+    35:96:void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent) -> onPlayerInteract
+    99:134:void createSmoke(org.bukkit.entity.Player) -> createSmoke
+    137:152:int getUses(org.bukkit.inventory.ItemStack) -> getUses
+    156:186:void updateUses(org.bukkit.inventory.ItemStack,int) -> updateUses
+    100:100:java.util.Set lambda$createSmoke$0(java.util.UUID) -> lambda$createSmoke$0
+com.dwitems.listeners.SmokeJumpListener$1 -> com.dwitems.listeners.g:
+# {"fileName":"SmokeJumpListener.java","id":"sourceFile"}
+    int ticks -> a
+    int val$smokeDuration -> b
+    java.util.Set val$playerSmoke -> a
+    org.bukkit.Location val$smokeLoc -> a
+    org.bukkit.entity.Player val$player -> a
+    double val$damagePerTick -> a
+    com.dwitems.listeners.SmokeJumpListener this$0 -> a
+    106:107:void <init>(com.dwitems.listeners.SmokeJumpListener,int,java.util.Set,org.bukkit.Location,org.bukkit.entity.Player,double) -> <init>
+    111:132:void run() -> run
+    125:129:void lambda$run$0(org.bukkit.entity.Player,double,org.bukkit.entity.Entity) -> a
+com.dwitems.listeners.SpawnerPickaxeListener -> com.dwitems.listeners.SpawnerPickaxeListener:
+# {"fileName":"SpawnerPickaxeListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    19:21:void <init>(com.dwitems.DWItems) -> <init>
+    25:80:void onBlockBreak(org.bukkit.event.block.BlockBreakEvent) -> onBlockBreak
+com.dwitems.listeners.TNTBombListener -> com.dwitems.listeners.TNTBombListener:
+# {"fileName":"TNTBombListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.util.Set unbreakableBlocks -> unbreakableBlocks
+    26:30:void <init>(com.dwitems.DWItems) -> <init>
+    34:138:void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent) -> onPlayerInteract
+com.dwitems.listeners.TNTBombListener$1 -> com.dwitems.listeners.h:
+# {"fileName":"TNTBombListener.java","id":"sourceFile"}
+    int timeLeft -> a
+    int val$explosionDelay -> b
+    org.bukkit.entity.Item val$droppedTNT -> a
+    int val$explosionRadius -> c
+    com.dwitems.listeners.TNTBombListener this$0 -> a
+    76:77:void <init>(com.dwitems.listeners.TNTBombListener,int,org.bukkit.entity.Item,int) -> <init>
+    81:136:void run() -> run
+    124:129:void lambda$run$0(org.bukkit.Location,int,org.bukkit.entity.Entity) -> a
+com.dwitems.listeners.TNTExplosivesListener -> com.dwitems.listeners.TNTExplosivesListener:
+# {"fileName":"TNTExplosivesListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.util.Set unbreakableBlocks -> unbreakableBlocks
+    26:34:void <init>(com.dwitems.DWItems) -> <init>
+    38:125:void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent) -> onPlayerInteract
+com.dwitems.listeners.TNTExplosivesListener$1 -> com.dwitems.listeners.i:
+# {"fileName":"TNTExplosivesListener.java","id":"sourceFile"}
+    int timeLeft -> a
+    int val$explosionDelay -> b
+    org.bukkit.entity.Item val$droppedTNT -> a
+    int val$explosionRadius -> c
+    com.dwitems.listeners.TNTExplosivesListener this$0 -> a
+    76:77:void <init>(com.dwitems.listeners.TNTExplosivesListener,int,org.bukkit.entity.Item,int) -> <init>
+    81:123:void run() -> run
+com.dwitems.listeners.TNTNuclearListener -> com.dwitems.listeners.TNTNuclearListener:
+# {"fileName":"TNTNuclearListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    25:27:void <init>(com.dwitems.DWItems) -> <init>
+    31:166:void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent) -> onPlayerInteract
+com.dwitems.listeners.TNTNuclearListener$1 -> com.dwitems.listeners.j:
+# {"fileName":"TNTNuclearListener.java","id":"sourceFile"}
+    int timeLeft -> a
+    int val$explosionDelay -> b
+    org.bukkit.entity.Item val$droppedTNT -> a
+    int val$explosionRadius -> c
+    com.dwitems.listeners.TNTNuclearListener this$0 -> a
+    76:77:void <init>(com.dwitems.listeners.TNTNuclearListener,int,org.bukkit.entity.Item,int) -> <init>
+    81:164:void run() -> run
+    145:157:void lambda$run$1(org.bukkit.Location,int,org.bukkit.entity.Entity) -> a
+    105:109:void lambda$run$0(org.bukkit.entity.Entity) -> a
+com.dwitems.listeners.TeleporterListener -> com.dwitems.listeners.TeleporterListener:
+# {"fileName":"TeleporterListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.util.HashMap cooldowns -> cooldowns
+    java.util.Map lastAttacker -> lastAttacker
+    java.util.Map lastCombatTime -> lastCombatTime
+    20:26:void <init>(com.dwitems.DWItems) -> <init>
+    30:45:void onPlayerDamage(org.bukkit.event.entity.EntityDamageByEntityEvent) -> onPlayerDamage
+    49:131:void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent) -> onPlayerInteract
+    134:141:boolean isInCombat(org.bukkit.entity.Player) -> isInCombat
+com.dwitems.listeners.ThermalImagerListener -> com.dwitems.listeners.ThermalImagerListener:
+# {"fileName":"ThermalImagerListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.util.HashMap cooldowns -> cooldowns
+    19:23:void <init>(com.dwitems.DWItems) -> <init>
+    27:80:void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent) -> onPlayerInteract
+    66:67:void lambda$onPlayerInteract$2(int,org.bukkit.entity.Player) -> lambda$onPlayerInteract$2
+    64:64:org.bukkit.entity.Player lambda$onPlayerInteract$1(org.bukkit.entity.Entity) -> lambda$onPlayerInteract$1
+    63:63:boolean lambda$onPlayerInteract$0(org.bukkit.entity.Entity) -> lambda$onPlayerInteract$0
+com.dwitems.listeners.UnbreakableElytraListener -> com.dwitems.listeners.UnbreakableElytraListener:
+# {"fileName":"UnbreakableElytraListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    13:15:void <init>(com.dwitems.DWItems) -> <init>
+    19:31:void onAnvilPrepare(org.bukkit.event.inventory.PrepareAnvilEvent) -> onAnvilPrepare
+    34:43:boolean isSimilarIgnoreAmount(org.bukkit.inventory.ItemStack,org.bukkit.inventory.ItemStack) -> isSimilarIgnoreAmount
+com.dwitems.listeners.WeaponSharpenerListener -> com.dwitems.listeners.WeaponSharpenerListener:
+# {"fileName":"WeaponSharpenerListener.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> plugin
+    java.util.Random random -> random
+    27:31:void <init>(com.dwitems.DWItems) -> <init>
+    36:47:void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent) -> onPlayerInteract
+    50:54:org.bukkit.inventory.ItemStack createGlassPane(org.bukkit.Material) -> createGlassPane
+    58:142:void openWeaponMenu(org.bukkit.entity.Player) -> openWeaponMenu
+    146:169:void onInventoryClick(org.bukkit.event.inventory.InventoryClickEvent) -> onInventoryClick
+    172:183:boolean isSameWeapon(org.bukkit.inventory.ItemStack,org.bukkit.inventory.ItemStack) -> isSameWeapon
+    187:194:java.lang.String getBaseItemName(org.bukkit.inventory.meta.ItemMeta) -> getBaseItemName
+    199:270:void handleWeaponUpgrade(org.bukkit.entity.Player,org.bukkit.inventory.ItemStack) -> handleWeaponUpgrade
+    273:288:int getFailChance(int) -> getFailChance
+    293:293:int getSuccessChance(int) -> getSuccessChance
+    297:300:boolean isWeaponSharpener(org.bukkit.inventory.ItemStack) -> isWeaponSharpener
+    304:307:boolean isWeapon(org.bukkit.inventory.ItemStack) -> isWeapon
+    313:319:java.util.List getWeaponsFromInventory(org.bukkit.entity.Player) -> getWeaponsFromInventory
+    323:338:double getWeaponDamage(org.bukkit.inventory.ItemStack) -> getWeaponDamage
+    342:354:double getBaseWeaponDamage(org.bukkit.Material) -> getBaseWeaponDamage
+    359:417:void increaseWeaponDamage(org.bukkit.inventory.ItemStack) -> increaseWeaponDamage
+com.dwitems.listeners.WeaponSharpenerListener$1 -> com.dwitems.listeners.k:
+# {"fileName":"WeaponSharpenerListener.java","id":"sourceFile"}
+    int[] $SwitchMap$org$bukkit$Material -> a
+    342:342:void <clinit>() -> <clinit>
+com.dwitems.managers.ItemManager -> com.dwitems.c.a:
+# {"fileName":"ItemManager.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> a
+    java.util.Map items -> a
+    java.io.File itemsFile -> a
+    org.bukkit.configuration.file.FileConfiguration itemsConfig -> a
+    25:30:void <init>(com.dwitems.DWItems) -> <init>
+    37:574:void loadItems() -> a
+    578:579:org.bukkit.inventory.ItemStack getItem(java.lang.String) -> a
+    583:583:int getItemConfig(java.lang.String,java.lang.String,int) -> a
+com.dwitems.managers.MessageManager -> com.dwitems.c.b:
+# {"fileName":"MessageManager.java","id":"sourceFile"}
+    com.dwitems.DWItems plugin -> a
+    org.bukkit.configuration.file.FileConfiguration langConfig -> a
+    java.util.regex.Pattern hexPattern -> a
+    15:20:void <init>(com.dwitems.DWItems) -> <init>
+    1023:1028:void loadMessages():23:28 -> <init>
+    1023:1028:void <init>(com.dwitems.DWItems):19 -> <init>
+    31:35:java.lang.String getMessage(java.lang.String) -> a
+    39:53:java.lang.String getMessage(java.lang.String,java.lang.String[]) -> a
+    57:69:java.lang.String formatMessage(java.lang.String) -> b
+com.dwitems.utils.BlockState -> com.dwitems.d.a:
+# {"fileName":"BlockState.java","id":"sourceFile"}
+    org.bukkit.Location location -> a
+    org.bukkit.Material material -> a
+    org.bukkit.block.data.BlockData blockData -> a
+    12:16:void <init>(org.bukkit.Location,org.bukkit.Material,org.bukkit.block.data.BlockData) -> <init>
+    19:21:void restore() -> a
+com.dwitems.utils.ColorUtil -> com.dwitems.d.b:
+# {"fileName":"ColorUtil.java","id":"sourceFile"}
+    java.util.regex.Pattern HEX_PATTERN -> a
+    14:25:java.lang.String colorize(java.lang.String) -> a
+    29:31:java.util.List colorize(java.util.List) -> a
+    11:11:void <clinit>() -> <clinit>

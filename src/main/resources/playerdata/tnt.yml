@@ -1,0 +1,8 @@
+# Список локаций кастомных TNT
+tnt_locations:
+  0:
+    world: world
+    x: 0
+    y: 64
+    z: 0
+    tnt_id: dwi_tnt
