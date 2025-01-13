@@ -93,7 +93,6 @@ public class DestroyPickaxeListener implements Listener {
             // Если блок в блэклист регионе и не в вайтлист регионе - отменяем событие
             if (blockInBlacklistedRegion && !blockInWhitelistedRegion) {
                 event.setCancelled(true);
-                player.sendMessage("§6[§c✘§6] §cЗдесь этот предмет использовать нельзя!");
                 return;
             }
 
@@ -121,7 +120,6 @@ public class DestroyPickaxeListener implements Listener {
                         if (region.getId().equals("__global__")) continue;
                         if (!itemManager.isItemAllowedInRegion("destroy_pickaxe", region.getId())) {
                             event.setCancelled(true);
-                            player.sendMessage("§6[§c✘§6] §cЗдесь этот предмет использовать нельзя!");
                             return;
                         }
                     }
