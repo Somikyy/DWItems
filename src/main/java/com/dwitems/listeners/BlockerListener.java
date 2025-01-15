@@ -1,7 +1,15 @@
 package com.dwitems.listeners;
 
 import com.dwitems.DWItems;
+import com.dwitems.managers.ItemManager;
 import com.dwitems.utils.BlockState;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -32,9 +40,11 @@ public class BlockerListener implements Listener {
     );
     private final Random random = new Random();
     private static final String WALL_BLOCK_META = "blocker_wall";
+    private final ItemManager itemManager;
 
     public BlockerListener(DWItems plugin) {
         this.plugin = plugin;
+        this.itemManager = plugin.getItemManager();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -121,6 +131,45 @@ public class BlockerListener implements Listener {
         ItemStack blocker = plugin.getItemManager().getItem("blocker");
         if (!item.isSimilar(blocker)) {
             return;
+        }
+
+        if (!itemManager.isItemAllowedInWorld("blocker", player.getWorld().getName())) {
+            event.setCancelled(true);
+            player.sendMessage("§6[§c✘§6] §cЗдесь этот предмет использовать нельзя!");
+            return;
+        }
+
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager regions = container.get(BukkitAdapter.adapt(player.getWorld()));
+
+        if (regions != null) {
+            BlockVector3 loc = BlockVector3.at(player.getLocation().getX(),
+                    player.getLocation().getY(),
+                    player.getLocation().getZ());
+
+            ApplicableRegionSet regionSet = regions.getApplicableRegions(loc);
+            boolean hasWhitelistedRegion = false;
+
+            // Сначала проверяем есть ли регион из вайтлиста
+            for (ProtectedRegion region : regionSet) {
+                if (region.getId().equals("__global__")) continue;
+                if (itemManager.hasWhitelistedRegion("blocker", region.getId())) {
+                    hasWhitelistedRegion = true;
+                    break;
+                }
+            }
+
+            // Если нет региона из вайтлиста, проверяем блэклист
+            if (!hasWhitelistedRegion) {
+                for (ProtectedRegion region : regionSet) {
+                    if (region.getId().equals("__global__")) continue;
+                    if (!itemManager.isItemAllowedInRegion("blocker", region.getId())) {
+                        event.setCancelled(true);
+                        player.sendMessage("§6[§c✘§6] §cЗдесь этот предмет использовать нельзя!");
+                        return;
+                    }
+                }
+            }
         }
 
         event.setCancelled(true);

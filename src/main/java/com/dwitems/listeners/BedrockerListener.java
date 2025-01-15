@@ -1,6 +1,7 @@
 package com.dwitems.listeners;
 
 import com.dwitems.DWItems;
+import com.dwitems.managers.ItemManager;
 import com.dwitems.utils.BlockState;
 import com.dwitems.utils.Reloadable;
 import com.sk89q.worldedit.EditSession;
@@ -14,6 +15,11 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -40,11 +46,13 @@ public class BedrockerListener implements Listener, Reloadable {
     private final int minDistance;
     private Clipboard schematic;
     private boolean schematicLoaded = false;
+    private final ItemManager itemManager;
 
     public BedrockerListener(DWItems plugin) {
         this.plugin = plugin;
         this.minDistance = plugin.getItemManager().getItemConfig("trapka", "min_distance", 10);
         loadSchematic();
+        this.itemManager = plugin.getItemManager();
     }
 
     private void loadSchematic() {
@@ -114,6 +122,45 @@ public class BedrockerListener implements Listener, Reloadable {
         if (!schematicLoaded) {
             player.sendMessage(plugin.getMessageManager().getMessage("messages.trapka.error_loading"));
             return;
+        }
+
+        if (!itemManager.isItemAllowedInWorld("trapka", player.getWorld().getName())) {
+            event.setCancelled(true);
+            player.sendMessage("§6[§c✘§6] §cЗдесь этот предмет использовать нельзя!");
+            return;
+        }
+
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager regions = container.get(BukkitAdapter.adapt(player.getWorld()));
+
+        if (regions != null) {
+            BlockVector3 loc = BlockVector3.at(player.getLocation().getX(),
+                    player.getLocation().getY(),
+                    player.getLocation().getZ());
+
+            ApplicableRegionSet regionSet = regions.getApplicableRegions(loc);
+            boolean hasWhitelistedRegion = false;
+
+            // Сначала проверяем есть ли регион из вайтлиста
+            for (ProtectedRegion region : regionSet) {
+                if (region.getId().equals("__global__")) continue;
+                if (itemManager.hasWhitelistedRegion("trapka", region.getId())) {
+                    hasWhitelistedRegion = true;
+                    break;
+                }
+            }
+
+            // Если нет региона из вайтлиста, проверяем блэклист
+            if (!hasWhitelistedRegion) {
+                for (ProtectedRegion region : regionSet) {
+                    if (region.getId().equals("__global__")) continue;
+                    if (!itemManager.isItemAllowedInRegion("trapka", region.getId())) {
+                        event.setCancelled(true);
+                        player.sendMessage("§6[§c✘§6] §cЗдесь этот предмет использовать нельзя!");
+                        return;
+                    }
+                }
+            }
         }
 
         event.setCancelled(true);
