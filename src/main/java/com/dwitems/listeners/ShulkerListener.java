@@ -116,6 +116,13 @@ public class ShulkerListener implements Listener {
             }
         }
 
+        Block block = shulker.getBlock();
+        BlockState state = block.getState();
+        if (state instanceof ShulkerBox) {
+            ShulkerBox shulkerState = (ShulkerBox) state;
+            shulkerState.open();
+        }
+
         event.setCancelled(true);
 
         if (sharedInv == null) {
@@ -155,6 +162,23 @@ public class ShulkerListener implements Listener {
                 .orElse(null);
 
         if (locationKey != null) {
+            String[] coords = locationKey.split(",");
+            if (coords.length == 4) {
+                Location loc = new Location(
+                        Bukkit.getWorld(coords[0]),
+                        Integer.parseInt(coords[1]),
+                        Integer.parseInt(coords[2]),
+                        Integer.parseInt(coords[3])
+                );
+
+                Block block = loc.getBlock();
+                BlockState state = block.getState();
+                if (state instanceof ShulkerBox) {
+                    ShulkerBox shulker = (ShulkerBox) state;
+                    shulker.close();
+                }
+            }
+
             saveShulkerContents(locationKey, sharedInv.getInventory().getContents());
             sharedInv.setOpen(false);
             activeInventories.remove(locationKey);
