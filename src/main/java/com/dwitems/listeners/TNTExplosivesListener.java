@@ -165,8 +165,49 @@ public class TNTExplosivesListener implements Listener {
 
                 if (timeLeft <= 0) {
                     droppedTNT.remove();
-
                     Location explosionLoc = tntLoc.clone();
+
+                    if (!itemManager.isItemAllowedInWorld("tnt_explosives", explosionLoc.getWorld().getName())) {
+                        tntLoc.getWorld().spawnParticle(Particle.SMOKE_LARGE, explosionLoc, 20, 0.5, 0.5, 0.5, 0.1);
+                        tntLoc.getWorld().playSound(explosionLoc, Sound.BLOCK_FIRE_EXTINGUISH, 1.0f, 1.0f);
+                        this.cancel();
+                        return;
+                    }
+
+                    RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+                    RegionManager regions = container.get(BukkitAdapter.adapt(explosionLoc.getWorld()));
+
+                    if (regions != null) {
+                        BlockVector3 loc = BlockVector3.at(
+                                explosionLoc.getX(),
+                                explosionLoc.getY(),
+                                explosionLoc.getZ()
+                        );
+
+                        ApplicableRegionSet regionSet = regions.getApplicableRegions(loc);
+                        boolean hasWhitelistedRegion = false;
+
+                        for (ProtectedRegion region : regionSet) {
+                            if (region.getId().equals("__global__")) continue;
+                            if (itemManager.hasWhitelistedRegion("tnt_explosives", region.getId())) {
+                                hasWhitelistedRegion = true;
+                                break;
+                            }
+                        }
+
+                        if (!hasWhitelistedRegion) {
+                            for (ProtectedRegion region : regionSet) {
+                                if (region.getId().equals("__global__")) continue;
+                                if (!itemManager.isItemAllowedInRegion("tnt_explosives", region.getId())) {
+                                    tntLoc.getWorld().spawnParticle(Particle.SMOKE_LARGE, explosionLoc, 20, 0.5, 0.5, 0.5, 0.1);
+                                    tntLoc.getWorld().playSound(explosionLoc, Sound.BLOCK_FIRE_EXTINGUISH, 1.0f, 1.0f);
+                                    this.cancel();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+
                     tntLoc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, explosionLoc, 1);
                     tntLoc.getWorld().playSound(explosionLoc, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f);
 

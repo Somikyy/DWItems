@@ -226,6 +226,45 @@ public class DwiTNTExplosivesListener implements Listener {
     }
 
     private void createExplosion(Location location, int radius, String tntId) {
+        if (!itemManager.isItemAllowedInWorld("tnt_explosives", location.getWorld().getName())) {
+            location.getWorld().spawnParticle(Particle.SMOKE_LARGE, location, 20, 0.5, 0.5, 0.5, 0.1);
+            location.getWorld().playSound(location, Sound.BLOCK_FIRE_EXTINGUISH, 1.0f, 1.0f);
+            return;
+        }
+
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager regions = container.get(BukkitAdapter.adapt(location.getWorld()));
+
+        if (regions != null) {
+            BlockVector3 loc = BlockVector3.at(
+                    location.getX(),
+                    location.getY(),
+                    location.getZ()
+            );
+
+            ApplicableRegionSet regionSet = regions.getApplicableRegions(loc);
+            boolean hasWhitelistedRegion = false;
+
+            for (ProtectedRegion region : regionSet) {
+                if (region.getId().equals("__global__")) continue;
+                if (itemManager.hasWhitelistedRegion("tnt_explosives", region.getId())) {
+                    hasWhitelistedRegion = true;
+                    break;
+                }
+            }
+
+            if (!hasWhitelistedRegion) {
+                for (ProtectedRegion region : regionSet) {
+                    if (region.getId().equals("__global__")) continue;
+                    if (!itemManager.isItemAllowedInRegion("tnt_explosives", region.getId())) {
+                        location.getWorld().spawnParticle(Particle.SMOKE_LARGE, location, 20, 0.5, 0.5, 0.5, 0.1);
+                        location.getWorld().playSound(location, Sound.BLOCK_FIRE_EXTINGUISH, 1.0f, 1.0f);
+                        return;
+                    }
+                }
+            }
+        }
+
         location.getWorld().createExplosion(
                 location.getX(),
                 location.getY(),
@@ -251,7 +290,6 @@ public class DwiTNTExplosivesListener implements Listener {
                         }
 
                         Material type = block.getType();
-                        // Проверяем, не является ли блок частью защищенной арены
                         if (plugin.getServer().getPluginManager().isPluginEnabled("DWItems")) {
                             BedrockerListener bedrockerListener = null;
                             for (RegisteredListener listener : HandlerList.getRegisteredListeners(plugin)) {
@@ -262,7 +300,7 @@ public class DwiTNTExplosivesListener implements Listener {
                             }
 
                             if (bedrockerListener != null && bedrockerListener.isLocationProtected(blockLoc)) {
-                                continue; // Пропускаем защищенные блоки
+                                continue;
                             }
                         }
 
@@ -331,7 +369,7 @@ public class DwiTNTExplosivesListener implements Listener {
                                 }
                                 break;
 
-                            default: // dwi_tnt
+                            default:
                                 if (type != Material.BEDROCK &&
                                         type != Material.CRYING_OBSIDIAN &&
                                         type != Material.OBSIDIAN &&
@@ -347,7 +385,6 @@ public class DwiTNTExplosivesListener implements Listener {
             }
         }
 
-        // Визуальные эффекты взрыва
         switch(tntId) {
             case "nuclear_tnt":
                 location.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, location, 5);
@@ -363,13 +400,12 @@ public class DwiTNTExplosivesListener implements Listener {
                 location.getWorld().playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 2.0f, 0.5f);
                 break;
 
-            default: // dwi_tnt
+            default:
                 location.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, location, 1);
                 location.getWorld().playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f);
                 break;
         }
 
-        //  цепная реакция с небольшой задержкой
         if (!chainReactionTNT.isEmpty()) {
             new BukkitRunnable() {
                 @Override
@@ -386,10 +422,10 @@ public class DwiTNTExplosivesListener implements Listener {
                                 int chainRadius = plugin.getItemManager().getItemConfig(chainTntId, "radius", 3);
                                 createExplosion(tntLoc, chainRadius, chainTntId);
                             }
-                        }.runTaskLater(plugin, 5L); // 0.25 секунды задержки
+                        }.runTaskLater(plugin, 5L);
                     }
                 }
-            }.runTaskLater(plugin, 5L); // 0.25 секунды задержки после основного взрыва
+            }.runTaskLater(plugin, 5L);
         }
     }
 

@@ -109,8 +109,9 @@ public class SmokeJumpListener implements Listener {
 
         event.setCancelled(true);
 
-        // Проверяем кулдаун после двойного прыжка
-        if (consecutiveJumps.getOrDefault(player.getUniqueId(), 0) >= 2) {
+        // Проверяем кулдаун после каждого прыжка
+        int currentJumps = consecutiveJumps.getOrDefault(player.getUniqueId(), 0);
+        if (currentJumps > 0) {
             int cooldown = plugin.getItemManager().getItemConfig("smoke_jump", "double_jump_cooldown", 3);
             long timeLeft = (lastJumpTime.getOrDefault(player.getUniqueId(), 0L) + (cooldown * 1000)) - System.currentTimeMillis();
             if (timeLeft > 0) {
@@ -118,7 +119,12 @@ public class SmokeJumpListener implements Listener {
                         "{time}", String.format("%.1f", timeLeft / 1000.0)));
                 return;
             }
-            consecutiveJumps.put(player.getUniqueId(), 0);
+
+            // Если прошло 2 прыжка, сбрасываем счетчик
+            if (currentJumps >= 2) {
+                consecutiveJumps.put(player.getUniqueId(), 0);
+                currentJumps = 0;
+            }
         }
 
         // Проверяем и обновляем количество использований
