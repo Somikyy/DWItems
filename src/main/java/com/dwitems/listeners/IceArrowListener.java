@@ -103,13 +103,15 @@ public class IceArrowListener implements Listener {
             }
         }
 
-        if (isOnCooldown(player)) {
-            event.setCancelled(true);
-            Map<UUID, Long> arrowCooldowns = cooldowns.computeIfAbsent("ice_arrow", k -> new HashMap<>());
-            long timeLeft = (arrowCooldowns.get(player.getUniqueId()) - System.currentTimeMillis()) / 1000;
-            player.sendMessage(plugin.getMessageManager().getMessage("messages.ice_arrow.cooldown",
-                    "{time}", String.valueOf(timeLeft)));
-            return;
+        if (!player.hasPermission("dwitems.nocooldown")) {
+            if (isOnCooldown(player)) {
+                event.setCancelled(true);
+                Map<UUID, Long> arrowCooldowns = cooldowns.computeIfAbsent("ice_arrow", k -> new HashMap<>());
+                long timeLeft = (arrowCooldowns.get(player.getUniqueId()) - System.currentTimeMillis()) / 1000;
+                player.sendMessage(plugin.getMessageManager().getMessage("messages.ice_arrow.cooldown",
+                        "{time}", String.valueOf(timeLeft)));
+                return;
+            }
         }
 
         Arrow projectile = (Arrow) event.getProjectile();

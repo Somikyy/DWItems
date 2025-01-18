@@ -90,15 +90,17 @@ public class ArmorArrowListener implements Listener {
             }
         }
 
-        if (armorArrowCooldowns.containsKey(player.getUniqueId())) {
-            long cooldown = plugin.getItemManager().getItemConfig("armor_arrow", "cooldown", 60);
-            long timeLeft = ((armorArrowCooldowns.get(player.getUniqueId()) / 1000) + cooldown)
-                    - (System.currentTimeMillis() / 1000);
-            if (timeLeft > 0) {
-                event.setCancelled(true);
-                player.sendMessage(plugin.getMessageManager().getMessage("messages.armor_arrow.cooldown",
-                        "{time}", String.valueOf(timeLeft)));
-                return;
+        if (!player.hasPermission("dwitems.nocooldown")) {
+            if (armorArrowCooldowns.containsKey(player.getUniqueId())) {
+                long cooldown = plugin.getItemManager().getItemConfig("armor_arrow", "cooldown", 60);
+                long timeLeft = ((armorArrowCooldowns.get(player.getUniqueId()) / 1000) + cooldown)
+                        - (System.currentTimeMillis() / 1000);
+                if (timeLeft > 0) {
+                    event.setCancelled(true);
+                    player.sendMessage(plugin.getMessageManager().getMessage("messages.armor_arrow.cooldown",
+                            "{time}", String.valueOf(timeLeft)));
+                    return;
+                }
             }
         }
 

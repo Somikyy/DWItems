@@ -107,12 +107,14 @@ public class MoneyArrowListener implements Listener {
         }
 
         // Проверка кулдауна
-        if (isOnCooldown(player)) {
-            event.setCancelled(true);
-            long timeLeft = getTimeLeft(player);
-            player.sendMessage(plugin.getMessageManager().getMessage("messages.money_arrow.cooldown",
-                    "{time}", String.valueOf(timeLeft)));
-            return;
+        if (!player.hasPermission("dwitems.nocooldown")) {
+            if (isOnCooldown(player)) {
+                event.setCancelled(true);
+                long timeLeft = getTimeLeft(player);
+                player.sendMessage(plugin.getMessageManager().getMessage("messages.money_arrow.cooldown",
+                        "{time}", String.valueOf(timeLeft)));
+                return;
+            }
         }
 
         Arrow arrow = (Arrow) event.getProjectile();

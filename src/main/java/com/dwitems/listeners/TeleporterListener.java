@@ -117,12 +117,14 @@ public class TeleporterListener implements Listener {
 
         // Проверка кулдауна
         int cooldownTime = plugin.getItemManager().getItemConfig("teleporter", "cooldown", 180);
-        if (cooldowns.containsKey(player.getUniqueId())) {
-            long timeLeft = cooldowns.get(player.getUniqueId()) - System.currentTimeMillis();
-            if (timeLeft > 0) {
-                player.sendMessage(plugin.getMessageManager().getMessage("messages.teleporter.cooldown",
-                        "{time}", String.valueOf(timeLeft / 1000)));
-                return;
+        if (!player.hasPermission("dwitems.nocooldown")) {
+            if (cooldowns.containsKey(player.getUniqueId())) {
+                long timeLeft = cooldowns.get(player.getUniqueId()) - System.currentTimeMillis();
+                if (timeLeft > 0) {
+                    player.sendMessage(plugin.getMessageManager().getMessage("messages.teleporter.cooldown",
+                            "{time}", String.valueOf(timeLeft / 1000)));
+                    return;
+                }
             }
         }
 

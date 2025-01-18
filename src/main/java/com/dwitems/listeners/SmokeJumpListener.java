@@ -114,10 +114,12 @@ public class SmokeJumpListener implements Listener {
         if (currentJumps > 0) {
             int cooldown = plugin.getItemManager().getItemConfig("smoke_jump", "double_jump_cooldown", 3);
             long timeLeft = (lastJumpTime.getOrDefault(player.getUniqueId(), 0L) + (cooldown * 1000)) - System.currentTimeMillis();
-            if (timeLeft > 0) {
-                player.sendMessage(plugin.getMessageManager().getMessage("messages.smoke_jump.cooldown",
-                        "{time}", String.format("%.1f", timeLeft / 1000.0)));
-                return;
+            if (!player.hasPermission("dwitems.nocooldown")) {
+                if (timeLeft > 0) {
+                    player.sendMessage(plugin.getMessageManager().getMessage("messages.smoke_jump.cooldown",
+                            "{time}", String.format("%.1f", timeLeft / 1000.0)));
+                    return;
+                }
             }
 
             // Если прошло 2 прыжка, сбрасываем счетчик

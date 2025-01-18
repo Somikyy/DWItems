@@ -99,12 +99,14 @@ public class FeatherAngelListener implements Listener {
 
         // Проверка кулдауна
         int cooldownTime = plugin.getItemManager().getItemConfig("feather_angel", "cooldown", 180);
-        if (cooldowns.containsKey(player.getUniqueId())) {
-            long timeLeft = cooldowns.get(player.getUniqueId()) - System.currentTimeMillis();
-            if (timeLeft > 0) {
-                player.sendMessage(plugin.getMessageManager().getMessage("messages.feather_angel.cooldown",
-                        "{time}", String.valueOf(timeLeft / 1000)));
-                return;
+        if (!player.hasPermission("dwitems.nocooldown")) {
+            if (cooldowns.containsKey(player.getUniqueId())) {
+                long timeLeft = cooldowns.get(player.getUniqueId()) - System.currentTimeMillis();
+                if (timeLeft > 0) {
+                    player.sendMessage(plugin.getMessageManager().getMessage("messages.feather_angel.cooldown",
+                            "{time}", String.valueOf(timeLeft / 1000)));
+                    return;
+                }
             }
         }
 

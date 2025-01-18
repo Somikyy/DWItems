@@ -90,12 +90,14 @@ public class DropArrowListener implements Listener {
         }
 
         // Проверка кулдауна
-        if (isOnCooldown(player)) {
-            event.setCancelled(true);
-            long timeLeft = getCooldownTimeLeft(player);
-            player.sendMessage(plugin.getMessageManager().getMessage("messages.drop_arrow.cooldown",
-                    "{time}", String.valueOf(timeLeft)));
-            return;
+        if (!player.hasPermission("dwitems.nocooldown")) {
+            if (isOnCooldown(player)) {
+                event.setCancelled(true);
+                long timeLeft = getCooldownTimeLeft(player);
+                player.sendMessage(plugin.getMessageManager().getMessage("messages.drop_arrow.cooldown",
+                        "{time}", String.valueOf(timeLeft)));
+                return;
+            }
         }
 
         arrow.setGlowing(true);

@@ -128,13 +128,15 @@ public class HarpoonListener implements Listener {
         if ((event.getState() == PlayerFishEvent.State.FISHING ||
                 event.getState() == PlayerFishEvent.State.REEL_IN) &&
                 isInCombat(player)) {
-            long cooldown = plugin.getItemManager().getItemConfig(harpoonType, "combat_cooldown", 5);
-            long timeLeft = (lastUseTime.getOrDefault(player.getUniqueId(), 0L) + (cooldown * 1000)) - System.currentTimeMillis();
-            if (timeLeft > 0) {
-                player.sendMessage(plugin.getMessageManager().getMessage("messages.harpoon.combat_cooldown",
-                        "{time}", String.format("%.1f", timeLeft / 1000.0)));
-                event.setCancelled(true);
-                return;
+            if (!player.hasPermission("dwitems.nocooldown")) {
+                long cooldown = plugin.getItemManager().getItemConfig(harpoonType, "combat_cooldown", 5);
+                long timeLeft = (lastUseTime.getOrDefault(player.getUniqueId(), 0L) + (cooldown * 1000)) - System.currentTimeMillis();
+                if (timeLeft > 0) {
+                    player.sendMessage(plugin.getMessageManager().getMessage("messages.harpoon.combat_cooldown",
+                            "{time}", String.format("%.1f", timeLeft / 1000.0)));
+                    event.setCancelled(true);
+                    return;
+                }
             }
         }
 

@@ -167,6 +167,7 @@ public class TNTExplosivesListener implements Listener {
                     droppedTNT.remove();
                     Location explosionLoc = tntLoc.clone();
 
+                    // Сначала проверяем мир
                     if (!itemManager.isItemAllowedInWorld("tnt_explosives", explosionLoc.getWorld().getName())) {
                         tntLoc.getWorld().spawnParticle(Particle.SMOKE_LARGE, explosionLoc, 20, 0.5, 0.5, 0.5, 0.1);
                         tntLoc.getWorld().playSound(explosionLoc, Sound.BLOCK_FIRE_EXTINGUISH, 1.0f, 1.0f);
@@ -177,35 +178,54 @@ public class TNTExplosivesListener implements Listener {
                     RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
                     RegionManager regions = container.get(BukkitAdapter.adapt(explosionLoc.getWorld()));
 
+                    // Проверяем все блоки в радиусе взрыва перед тем как что-то делать
+                    boolean canExplode = true;
                     if (regions != null) {
-                        BlockVector3 loc = BlockVector3.at(
-                                explosionLoc.getX(),
-                                explosionLoc.getY(),
-                                explosionLoc.getZ()
-                        );
+                        for (int x = -explosionRadius; x <= explosionRadius && canExplode; x++) {
+                            for (int y = -explosionRadius; y <= explosionRadius && canExplode; y++) {
+                                for (int z = -explosionRadius; z <= explosionRadius && canExplode; z++) {
+                                    Location blockLoc = explosionLoc.clone().add(x, y, z);
+                                    if (blockLoc.distance(explosionLoc) <= explosionRadius) {
+                                        BlockVector3 loc = BlockVector3.at(
+                                                blockLoc.getX(),
+                                                blockLoc.getY(),
+                                                blockLoc.getZ()
+                                        );
 
-                        ApplicableRegionSet regionSet = regions.getApplicableRegions(loc);
-                        boolean hasWhitelistedRegion = false;
+                                        ApplicableRegionSet regionSet = regions.getApplicableRegions(loc);
+                                        boolean hasWhitelistedRegion = false;
 
-                        for (ProtectedRegion region : regionSet) {
-                            if (region.getId().equals("__global__")) continue;
-                            if (itemManager.hasWhitelistedRegion("tnt_explosives", region.getId())) {
-                                hasWhitelistedRegion = true;
-                                break;
-                            }
-                        }
+                                        // Проверяем вайтлист
+                                        for (ProtectedRegion region : regionSet) {
+                                            if (region.getId().equals("__global__")) continue;
+                                            if (itemManager.hasWhitelistedRegion("tnt_explosives", region.getId())) {
+                                                hasWhitelistedRegion = true;
+                                                break;
+                                            }
+                                        }
 
-                        if (!hasWhitelistedRegion) {
-                            for (ProtectedRegion region : regionSet) {
-                                if (region.getId().equals("__global__")) continue;
-                                if (!itemManager.isItemAllowedInRegion("tnt_explosives", region.getId())) {
-                                    tntLoc.getWorld().spawnParticle(Particle.SMOKE_LARGE, explosionLoc, 20, 0.5, 0.5, 0.5, 0.1);
-                                    tntLoc.getWorld().playSound(explosionLoc, Sound.BLOCK_FIRE_EXTINGUISH, 1.0f, 1.0f);
-                                    this.cancel();
-                                    return;
+                                        // Если нет в вайтлисте, проверяем блэклист
+                                        if (!hasWhitelistedRegion) {
+                                            for (ProtectedRegion region : regionSet) {
+                                                if (region.getId().equals("__global__")) continue;
+                                                if (!itemManager.isItemAllowedInRegion("tnt_explosives", region.getId())) {
+                                                    canExplode = false;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
+                    }
+
+                    // Если хоть один блок в запрещенном регионе - отменяем весь взрыв
+                    if (!canExplode) {
+                        tntLoc.getWorld().spawnParticle(Particle.SMOKE_LARGE, explosionLoc, 20, 0.5, 0.5, 0.5, 0.1);
+                        tntLoc.getWorld().playSound(explosionLoc, Sound.BLOCK_FIRE_EXTINGUISH, 1.0f, 1.0f);
+                        this.cancel();
+                        return;
                     }
 
                     tntLoc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, explosionLoc, 1);
@@ -310,9 +330,7 @@ public class TNTExplosivesListener implements Listener {
                     this.cancel();
                     return;
                 }
-
-                timeLeft--;
             }
-        }.runTaskTimer(plugin, 0L, 20L);
+        };
     }
 }

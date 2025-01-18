@@ -90,13 +90,15 @@ public class PoisonEggListener implements Listener {
 
         // Проверка кулдауна
         int cooldownTime = plugin.getItemManager().getItemConfig("poison_egg", "cooldown", 120);
-        if (cooldowns.containsKey(player.getUniqueId())) {
-            long timeLeft = cooldowns.get(player.getUniqueId()) - System.currentTimeMillis();
-            if (timeLeft > 0) {
-                event.setCancelled(true);
-                player.sendMessage(plugin.getMessageManager().getMessage("messages.poison_egg.cooldown",
-                        "{time}", String.valueOf(timeLeft / 1000)));
-                return;
+        if (!player.hasPermission("dwitems.nocooldown")) {
+            if (cooldowns.containsKey(player.getUniqueId())) {
+                long timeLeft = cooldowns.get(player.getUniqueId()) - System.currentTimeMillis();
+                if (timeLeft > 0) {
+                    event.setCancelled(true);
+                    player.sendMessage(plugin.getMessageManager().getMessage("messages.poison_egg.cooldown",
+                            "{time}", String.valueOf(timeLeft / 1000)));
+                    return;
+                }
             }
         }
 

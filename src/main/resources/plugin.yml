@@ -20,3 +20,7 @@ permissions:
   dwitems.reload:
     description: Позволяет перезагружать плагин
     default: op
+
+  dwitems.nocooldown:
+    description: Позволяет убрать кулдаун на всех предметах
+    default: op
