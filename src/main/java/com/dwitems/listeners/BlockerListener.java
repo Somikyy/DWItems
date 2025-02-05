@@ -203,6 +203,11 @@ public class BlockerListener implements Listener {
 
         List<BlockState> originalBlocks = createWall(wallLocation, size, player.getLocation().getPitch());
 
+        if (originalBlocks.isEmpty()) {
+            player.sendMessage(plugin.getMessageManager().getMessage("messages.blocker.invalid_location"));
+            return;
+        }
+
         cooldowns.put(player.getUniqueId(), System.currentTimeMillis() + (cooldownTime * 1000));
 
         if (item.getAmount() > 1) {
@@ -276,6 +281,24 @@ public class BlockerListener implements Listener {
     private List<BlockState> createWall(Location center, int size, float pitch) {
         List<BlockState> originalBlocks = new ArrayList<>();
         Set<Location> wallLocations = getWallLocations(center, size, pitch);
+
+        for (Location loc : wallLocations) {
+            Block block = loc.getBlock();
+            Material type = block.getType();
+
+            if (type == Material.CHEST
+                    || type == Material.TRAPPED_CHEST
+                    || type == Material.BARREL
+                    || type.name().contains("SHULKER_BOX")
+                    || type == Material.FURNACE
+                    || type == Material.BLAST_FURNACE
+                    || type == Material.SMOKER
+                    || type == Material.DROPPER
+                    || type == Material.DISPENSER
+                    || type == Material.HOPPER) {
+                return new ArrayList<>();
+            }
+        }
 
         for (Location loc : wallLocations) {
             Block block = loc.getBlock();

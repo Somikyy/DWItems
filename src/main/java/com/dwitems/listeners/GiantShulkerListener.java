@@ -27,6 +27,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -51,6 +52,23 @@ public class GiantShulkerListener implements Listener {
         this.plugin = plugin;
         this.itemManager = plugin.getItemManager();
         this.customShulkerName = plugin.getItemManager().getItem("shulker_45").getItemMeta().getDisplayName();
+    }
+
+    @EventHandler
+    public void onEnderChestClick(InventoryClickEvent event) {
+        if (event.getInventory().getType() != InventoryType.ENDER_CHEST) {
+            return;
+        }
+
+        ItemStack clickedItem = event.getCurrentItem();
+        ItemStack cursorItem = event.getCursor();
+
+        if ((clickedItem != null && isCustomShulker(clickedItem)) ||
+                (cursorItem != null && isCustomShulker(cursorItem))) {
+            event.setCancelled(true);
+            Player player = (Player) event.getWhoClicked();
+            player.sendMessage("§6[§c✘§6] §cНельзя класть этот шалкер в эндер сундук!");
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH)

@@ -144,6 +144,13 @@ public class TNTExplosivesListener implements Listener {
 
                 Location tntLoc = droppedTNT.getLocation();
 
+                // Проверяем, можно ли взорвать взрывчатку в текущем регионе
+                if (!isExplosionAllowed(tntLoc, explosionRadius)) {
+                    droppedTNT.remove(); // Удаляем взрывчатку, если регион запрещен
+                    this.cancel();
+                    return;
+                }
+
                 if (timeLeft <= 3) {
                     tntLoc.getWorld().spawnParticle(Particle.SMOKE_NORMAL, tntLoc, 10, 0.2, 0.2, 0.2, 0.05);
                     tntLoc.getWorld().playSound(tntLoc, Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
@@ -175,50 +182,8 @@ public class TNTExplosivesListener implements Listener {
                         return;
                     }
 
-                    RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-                    RegionManager regions = container.get(BukkitAdapter.adapt(explosionLoc.getWorld()));
-
                     // Проверяем все блоки в радиусе взрыва перед тем как что-то делать
-                    boolean canExplode = true;
-                    if (regions != null) {
-                        for (int x = -explosionRadius; x <= explosionRadius && canExplode; x++) {
-                            for (int y = -explosionRadius; y <= explosionRadius && canExplode; y++) {
-                                for (int z = -explosionRadius; z <= explosionRadius && canExplode; z++) {
-                                    Location blockLoc = explosionLoc.clone().add(x, y, z);
-                                    if (blockLoc.distance(explosionLoc) <= explosionRadius) {
-                                        BlockVector3 loc = BlockVector3.at(
-                                                blockLoc.getX(),
-                                                blockLoc.getY(),
-                                                blockLoc.getZ()
-                                        );
-
-                                        ApplicableRegionSet regionSet = regions.getApplicableRegions(loc);
-                                        boolean hasWhitelistedRegion = false;
-
-                                        // Проверяем вайтлист
-                                        for (ProtectedRegion region : regionSet) {
-                                            if (region.getId().equals("__global__")) continue;
-                                            if (itemManager.hasWhitelistedRegion("tnt_explosives", region.getId())) {
-                                                hasWhitelistedRegion = true;
-                                                break;
-                                            }
-                                        }
-
-                                        // Если нет в вайтлисте, проверяем блэклист
-                                        if (!hasWhitelistedRegion) {
-                                            for (ProtectedRegion region : regionSet) {
-                                                if (region.getId().equals("__global__")) continue;
-                                                if (!itemManager.isItemAllowedInRegion("tnt_explosives", region.getId())) {
-                                                    canExplode = false;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    boolean canExplode = isExplosionAllowed(explosionLoc, explosionRadius);
 
                     // Если хоть один блок в запрещенном регионе - отменяем весь взрыв
                     if (!canExplode) {
@@ -330,7 +295,53 @@ public class TNTExplosivesListener implements Listener {
                     this.cancel();
                     return;
                 }
+
+                timeLeft--;
             }
-        };
+        }.runTaskTimer(plugin, 0L, 20L);
+    }
+
+    private boolean isExplosionAllowed(Location location, int radius) {
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager regions = container.get(BukkitAdapter.adapt(location.getWorld()));
+
+        if (regions != null) {
+            for (int x = -radius; x <= radius; x++) {
+                for (int y = -radius; y <= radius; y++) {
+                    for (int z = -radius; z <= radius; z++) {
+                        Location blockLoc = location.clone().add(x, y, z);
+                        if (blockLoc.distance(location) <= radius) {
+                            BlockVector3 loc = BlockVector3.at(
+                                    blockLoc.getX(),
+                                    blockLoc.getY(),
+                                    blockLoc.getZ()
+                            );
+
+                            ApplicableRegionSet regionSet = regions.getApplicableRegions(loc);
+                            boolean hasWhitelistedRegion = false;
+
+                            for (ProtectedRegion region : regionSet) {
+                                if (region.getId().equals("__global__")) continue;
+                                if (itemManager.hasWhitelistedRegion("tnt_explosives", region.getId())) {
+                                    hasWhitelistedRegion = true;
+                                    break;
+                                }
+                            }
+
+                            if (!hasWhitelistedRegion) {
+                                for (ProtectedRegion region : regionSet) {
+                                    if (region.getId().equals("__global__")) continue;
+                                    if (!itemManager.isItemAllowedInRegion("tnt_explosives", region.getId())) {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 }
